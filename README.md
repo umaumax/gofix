@@ -2,7 +2,7 @@
 
 ## install
 ```
-go get -u github.com/umauma/gofix
+go get -u github.com/umaumax/gofix
 ```
 
 ## dict dir
