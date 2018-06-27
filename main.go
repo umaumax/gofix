@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 	"regexp"
-	"strconv"
+	// 	"strconv"
 	"strings"
 
 	"github.com/masatana/go-textdistance"
@@ -35,10 +35,10 @@ func gofix(filetype string, line string) string {
 }
 
 func guess(filetype string, s string) (ret string, err error) {
-	powerReg := regexp.MustCompile(`(.*)\*\*([0-9]+)`)
+	// 	powerReg := regexp.MustCompile(`(.*)\*\*([0-9]+)`)
 
 	m, err := loadDict(filetype)
-	min := 0.35
+	min := 0.2
 	candidateWord := ""
 	for key, list := range m {
 		// NOTE:  完全一致
@@ -50,23 +50,27 @@ func guess(filetype string, s string) (ret string, err error) {
 				return key, nil
 			}
 		}
+		// NOTE: 短すぎる文字は完全一致以外除外
+		if len(s) <= 3 {
+			continue
+		}
 
 		// NOTE: べき乗展開
 		// TODO: 個別にON/OFFできるように(特にpythonでは不要)
-		result := powerReg.FindStringSubmatch(s)
-		if len(result) == 3 {
-			a := result[1]
-			b, err := strconv.Atoi(result[2])
-			if err != nil || b <= 0 {
-				// NOTE: no error handling
-			} else {
-				s = a
-				for i := 1; i < b; i++ {
-					s += "*" + a
-				}
-				return s, nil
-			}
-		}
+		// 		result := powerReg.FindStringSubmatch(s)
+		// 		if len(result) == 3 {
+		// 			a := result[1]
+		// 			b, err := strconv.Atoi(result[2])
+		// 			if err != nil || b <= 0 {
+		// 				// NOTE: no error handling
+		// 			} else {
+		// 				s = a
+		// 				for i := 1; i < b; i++ {
+		// 					s += "*" + a
+		// 				}
+		// 				return s, nil
+		// 			}
+		// 		}
 
 		tmp := textdistance.LevenshteinDistance(s, key)
 		length := len(s) + len(key)
