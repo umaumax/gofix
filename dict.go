@@ -10,7 +10,8 @@ import (
 	"github.com/mitchellh/go-homedir"
 )
 
-func loadDict(filetype string) (list []string, err error) {
+func loadDict(filetype string) (m map[string][]string, err error) {
+	m = map[string][]string{}
 	configDirPath, err := homedir.Expand("~/.config/gofix")
 	if err != nil {
 		return
@@ -39,7 +40,14 @@ func loadDict(filetype string) (list []string, err error) {
 			if strings.HasPrefix(line, "#") {
 				continue
 			}
-			list = append(list, line)
+			lists := strings.Fields(line)
+			word := lists[0]
+			if _, ok := m[word]; !ok {
+				m[word] = []string{}
+			}
+			for _, key := range lists[1:] {
+				m[word] = append(m[word], key)
+			}
 		}
 		f.Close()
 		if err = scanner.Err(); err != nil {

@@ -30,12 +30,18 @@ func gofix(filetype string, line string) string {
 func guess(filetype string, s string) (ret string, err error) {
 	powerReg := regexp.MustCompile(`(.*)\*\*([0-9]+)`)
 
-	list, err := loadDict(filetype)
+	m, err := loadDict(filetype)
 	min := 0.35
-	index := -1
-	for i, v := range list {
-		if s == v {
-			return s, nil
+	candidateWord := ""
+	for key, list := range m {
+		// NOTE:  完全一致
+		if s == key {
+			return key, nil
+		}
+		for _, v := range list {
+			if s == v {
+				return key, nil
+			}
 		}
 
 		// NOTE: べき乗展開
@@ -55,8 +61,8 @@ func guess(filetype string, s string) (ret string, err error) {
 			}
 		}
 
-		tmp := textdistance.LevenshteinDistance(s, v)
-		length := len(s) + len(v)
+		tmp := textdistance.LevenshteinDistance(s, key)
+		length := len(s) + len(key)
 		cost := 0.0
 		// 		thLength := 4
 		// 		if length <= thLength {
@@ -65,13 +71,12 @@ func guess(filetype string, s string) (ret string, err error) {
 		dist := (float64(tmp) + cost) / float64(length)
 		if dist <= min {
 			min = dist
-			index = i
+			candidateWord = key
 		}
 		//		fmt.Println(s, v, dist)
 	}
-	if index != -1 {
-		//		fmt.Println("min", s, list[index], min)
-		s = list[index]
+	if candidateWord != "" {
+		s = candidateWord
 	}
 	return s, nil
 }
