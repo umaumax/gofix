@@ -14,17 +14,24 @@ import (
 )
 
 func gofix(filetype string, line string) string {
-	// NOTE field よりも自然な区切りにするとよいかも
-	tmps := strings.Fields(line)
+	delim := "@@@@@@@@"
+	re := regexp.MustCompile(`([a-zA-Z0-9]+)`)
+	tmps := strings.Split(re.ReplaceAllString(line, delim+"$1"+delim), delim)
+	// 	for i,v:=range tmps{
+	//
+	// 	}
 	var err error
 	for i, v := range tmps {
+		if v == "" {
+			continue
+		}
 		tmps[i], err = guess(filetype, v)
 		if err != nil {
 			// TODO: err handling?
 			log.Println("gofix", err)
 		}
 	}
-	return strings.Join(tmps, " ")
+	return strings.Join(tmps, "")
 }
 
 func guess(filetype string, s string) (ret string, err error) {
