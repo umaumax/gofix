@@ -30,7 +30,7 @@ func TestGo(t *testing.T) {
 	}
 	cnt := 0
 	for i, v := range list {
-		result := gofix(filetype, v.in)
+		result := golfix(filetype, v.in)
 		if result != v.out {
 			fmt.Println("failure", i, "\n", "in :", v.in, "\n", "out:", result, "\n", "req:", v.out)
 		} else {

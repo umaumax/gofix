@@ -1,21 +1,23 @@
-# gofix
+# golfix
+
+go line fix
 
 ## install
 ```
-go get -u github.com/umaumax/gofix
+go get -u github.com/umaumax/golfix
 ```
 
 ## dict dir
 ```
-~/.config/gofix/
+~/.config/golfix/
 ```
 
 ## dict file
-`<filetype>.gofix`, `common.gofix`
+`<filetype>.golfix`, `common.golfix`
 
 ```
 # comment
 <dst word> <src word1> <src word2> ...
 ```
 
-[dotfiles/\.config/gofix at master · umaumax/dotfiles]( https://github.com/umaumax/dotfiles/tree/master/.config/gofix )
+[dotfiles/\.config/golfix at master · umaumax/dotfiles]( https://github.com/umaumax/dotfiles/tree/master/.config/golfix )

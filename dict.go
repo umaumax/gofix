@@ -12,17 +12,17 @@ import (
 
 func loadDict(filetype string) (m map[string][]string, err error) {
 	m = map[string][]string{}
-	configDirPath, err := homedir.Expand("~/.config/gofix")
+	configDirPath, err := homedir.Expand("~/.config/golfix")
 	if err != nil {
 		return
 	}
-	filenames, err := filepath.Glob(filepath.Join(configDirPath, fmt.Sprintf("%s.gofix", filetype)))
+	filenames, err := filepath.Glob(filepath.Join(configDirPath, fmt.Sprintf("%s.golfix", filetype)))
 	if err != nil {
 		return
 	}
 	{
 		var commonFilenames []string
-		commonFilenames, err = filepath.Glob(filepath.Join(configDirPath, "common.gofix"))
+		commonFilenames, err = filepath.Glob(filepath.Join(configDirPath, "common.golfix"))
 		if err != nil {
 			return
 		}

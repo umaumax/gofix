@@ -13,7 +13,7 @@ import (
 	"github.com/masatana/go-textdistance"
 )
 
-func gofix(filetype string, line string) string {
+func golfix(filetype string, line string) string {
 	delim := "@@@@@@@@"
 	re := regexp.MustCompile(`([a-zA-Z0-9]+)`)
 	tmps := strings.Split(re.ReplaceAllString(line, delim+"$1"+delim), delim)
@@ -28,7 +28,7 @@ func gofix(filetype string, line string) string {
 		tmps[i], err = guess(filetype, v)
 		if err != nil {
 			// TODO: err handling?
-			log.Println("gofix", err)
+			log.Println("golfix", err)
 		}
 	}
 	return strings.Join(tmps, "")
@@ -102,7 +102,7 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		line := scanner.Text()
-		ret := gofix(filetype, line)
+		ret := golfix(filetype, line)
 		fmt.Println(ret)
 	}
 	if err = scanner.Err(); err != nil {
